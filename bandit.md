@@ -170,3 +170,40 @@ qw: ASCII text
 :/tmp/asdfg$ cat qw
 The password is 8ZjyCRiBWFYkneahHwxCv3wb2a1ORpYL
 ```
+
+## Bandit 13
+The password for the next level is stored in /etc/bandit_pass/bandit14 and can only be read by user bandit14. For this level, you don’t get the next password, but you get a private SSH key that can be used to log into the next level. Note: localhost is a hostname that refers to the machine you are working on
+
+```bash
+:~$ ssh bandit14@localhost -i sshkey.private
+```
+
+## Bandit 14
+The password for the next level can be retrieved by submitting the password of the current level to port 30000 on localhost.
+
+```bash
+:~$ cat /etc/bandit_pass/bandit14
+4wcYUJFw0k0XLShlDzztnTBHiqxU3b3e
+```
+
+nc solution:
+```bash
+:~$ nc localhost 30000
+4wcYUJFw0k0XLShlDzztnTBHiqxU3b3e
+Correct!
+BfMYroe26WYalil77FoDi9qh59eK5xNr
+```
+
+## Bandit 15
+The password for the next level can be retrieved by submitting the password of the current level to port 30001 on localhost using SSL encryption.
+
+Helpful note: Getting “HEARTBEATING” and “Read R BLOCK”? Use -ign_eof and read the “CONNECTED COMMANDS” section in the manpage. Next to ‘R’ and ‘Q’, the ‘B’ command also works in this version of that command…
+
+```bash
+:~$ openssl
+OpenSSL> s_client -host localhost -port 30001
+*output of s_client*
+BfMYroe26WYalil77FoDi9qh59eK5xNr
+Correct!
+cluFn7wTiGryunymYOu4RcffSxQluehd
+```
